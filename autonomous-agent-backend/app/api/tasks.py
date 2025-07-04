@@ -1,6 +1,8 @@
 import uuid
 from fastapi import APIRouter, BackgroundTasks, Request
 from fastapi.responses import StreamingResponse, JSONResponse
+import asyncio
+from app.core.mistral_client import stream_markdown
 
 router = APIRouter(prefix="/tasks", tags=["tasks"])
 
@@ -8,21 +10,17 @@ router = APIRouter(prefix="/tasks", tags=["tasks"])
 TASK_RESPONSES: dict[str, str] = {}
 
 
-def generate_ai_response(task_id: str, prompt: str):
-    # TODO: Call Mistral API
-    import time, random
-    messages = [
-        "Processing your task...",
-        "Thinking...",
-        "Almost done...",
-        f"Generated code for: {prompt}",
-    ]
+async def generate_ai_response_async(task_id: str, prompt: str):
     aggregated = []
-    for m in messages:
-        time.sleep(random.uniform(0.5, 1.2))
-        aggregated.append(m)
-        TASK_RESPONSES[task_id] = "\n".join(aggregated)
+    async for chunk in stream_markdown(prompt):
+        aggregated.append(chunk)
+        TASK_RESPONSES[task_id] = "".join(aggregated)
     TASK_RESPONSES[task_id] += "\n**Completed**"
+
+
+def generate_ai_response(task_id: str, prompt: str):
+    # Run async Mistral client in sync background
+    asyncio.run(generate_ai_response_async(task_id, prompt))
 
 
 @router.post("/")
