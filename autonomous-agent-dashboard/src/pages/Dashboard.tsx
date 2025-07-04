@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import TaskForm from '../components/TaskForm';
 import ResponsePanel from '../components/ResponsePanel';
 import FunctionList from '../components/FunctionList';
 import CodeEditor from '../components/CodeEditor';
 import { FunctionMeta } from '../types';
+import { submitTask, streamTask } from '../api/agent';
 
 // Placeholder data – to be fetched via API later
 const dummyFunctions: FunctionMeta[] = [
@@ -14,11 +15,37 @@ const dummyFunctions: FunctionMeta[] = [
 function Dashboard() {
   const [response, setResponse] = useState('');
   const [selectedFunction, setSelectedFunction] = useState<FunctionMeta | null>(null);
+  const streamRef = useRef<EventSource | null>(null);
 
   const handleTaskSubmit = async (prompt: string) => {
-    // TODO: call backend POST /tasks and SSE
-    setResponse(`You submitted: ${prompt}\n\n_AI response will appear here once integrated._`);
+    if (streamRef.current) {
+      streamRef.current.close();
+    }
+
+    try {
+      const { task_id } = await submitTask(prompt);
+      const es = streamTask(task_id);
+      streamRef.current = es;
+
+      es.onmessage = (evt) => {
+        setResponse(evt.data);
+      };
+
+      es.onerror = () => {
+        es.close();
+      };
+    } catch (err) {
+      console.error(err);
+      setResponse('Error submitting task.');
+    }
   };
+
+  // cleanup on unmount
+  useEffect(() => {
+    return () => {
+      streamRef.current?.close();
+    };
+  }, []);
 
   return (
     <div className="space-y-6">
