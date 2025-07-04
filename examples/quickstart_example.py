@@ -1,13 +1,11 @@
-
-
 import babyagi
 import os
 
 
 app = babyagi.create_app('/dashboard')
 
-# Add OpenAI key to enable automated descriptions and embedding of functions.
-babyagi.add_key_wrapper('openai_api_key',os.environ['OPENAI_API_KEY'])
+# Add Mistral API key to enable AI-driven code generation.
+babyagi.add_key_wrapper('mistral_api_key', os.environ['MISTRAL_API_KEY'])
 
 
 @app.route('/')
