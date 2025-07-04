@@ -24,3 +24,15 @@ export interface FunctionCreate {
   dependencies?: string[];
   secret_keys?: string[];
 }
+
+export interface KeyMeta {
+  id: string | number;
+  name: string;
+  value: string; // encrypted (masked on UI)
+  created_at?: string;
+}
+
+export interface KeyCreate {
+  name: string;
+  value: string;
+}

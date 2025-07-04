@@ -1,4 +1,5 @@
 import { TaskRequest, FunctionMeta, FunctionCreate } from '../types';
+import type { KeyMeta, KeyCreate } from '../types';
 
 const API_URL = import.meta.env.VITE_API_URL as string;
 const API_KEY = import.meta.env.VITE_API_KEY as string;
@@ -72,5 +73,39 @@ export async function deleteFunction(id: string | number): Promise<void> {
   });
   if (!res.ok) {
     throw new Error('Failed to delete function');
+  }
+}
+
+// Keys API
+
+export async function fetchKeys(): Promise<KeyMeta[]> {
+  const res = await fetch(`${API_URL}/keys`, {
+    headers: getHeaders(),
+  });
+  if (!res.ok) {
+    throw new Error('Failed to fetch keys');
+  }
+  return res.json();
+}
+
+export async function createKey(key: KeyCreate): Promise<KeyMeta> {
+  const res = await fetch(`${API_URL}/keys`, {
+    method: 'POST',
+    headers: getHeaders(),
+    body: JSON.stringify(key),
+  });
+  if (!res.ok) {
+    throw new Error('Failed to create key');
+  }
+  return res.json();
+}
+
+export async function deleteKey(id: string | number): Promise<void> {
+  const res = await fetch(`${API_URL}/keys/${id}`, {
+    method: 'DELETE',
+    headers: getHeaders(),
+  });
+  if (!res.ok) {
+    throw new Error('Failed to delete key');
   }
 }
