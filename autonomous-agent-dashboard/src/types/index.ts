@@ -36,3 +36,23 @@ export interface KeyCreate {
   name: string;
   value: string;
 }
+
+// Graph types
+export interface GraphNode {
+  data: {
+    id: string;
+    label: string;
+  };
+}
+
+export interface GraphEdge {
+  data: {
+    source: string;
+    target: string;
+  };
+}
+
+export interface GraphData {
+  nodes: GraphNode[];
+  edges: GraphEdge[];
+}

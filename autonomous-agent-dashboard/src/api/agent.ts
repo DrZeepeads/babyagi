@@ -1,5 +1,5 @@
 import { TaskRequest, FunctionMeta, FunctionCreate } from '../types';
-import type { KeyMeta, KeyCreate } from '../types';
+import type { KeyMeta, KeyCreate, GraphData } from '../types';
 
 const API_URL = import.meta.env.VITE_API_URL as string;
 const API_KEY = import.meta.env.VITE_API_KEY as string;
@@ -108,4 +108,14 @@ export async function deleteKey(id: string | number): Promise<void> {
   if (!res.ok) {
     throw new Error('Failed to delete key');
   }
+}
+
+export async function fetchGraph(): Promise<GraphData> {
+  const res = await fetch(`${API_URL}/graph`, {
+    headers: getHeaders(),
+  });
+  if (!res.ok) {
+    throw new Error('Failed to fetch graph');
+  }
+  return res.json();
 }
