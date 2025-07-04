@@ -1,0 +1,51 @@
+{
+  "name": "autonomous-agent-dashboard",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.23.0",
+    "react-markdown": "^9.0.1",
+    "remark-gfm": "^3.0.1",
+    "monaco-editor": "^0.48.0",
+    "@monaco-editor/react": "^5.3.0",
+    "cytoscape": "^3.28.0",
+    "react-cytoscapejs": "^1.2.0",
+    "cytoscape-dagre": "^2.5.0",
+    "crypto-js": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.24",
+    "@types/react-dom": "^18.2.8",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/react-markdown": "^8.0.8",
+    "@types/cytoscape": "^3.19.6",
+    "@types/node": "^20.11.17",
+    "@types/crypto-js": "^4.2.1",
+    "@types/react-cytoscapejs": "^1.2.2",
+    "@testing-library/react": "^14.1.2",
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/user-event": "^14.5.1",
+    "@types/vitest": "^0.0.1",
+    "@types/testing-library__react": "^14.0.5",
+    "@types/monaco-editor": "^0.34.2",
+    "@types/remark-gfm": "^3.0.3",
+    "@types/tailwindcss": "^3.2.7",
+    "@vitejs/plugin-react": "^4.0.3",
+    "typescript": "^5.4.2",
+    "vite": "^5.2.0",
+    "tailwindcss": "^3.4.2",
+    "postcss": "^8.4.35",
+    "autoprefixer": "^10.4.16",
+    "vitest": "^1.2.3",
+    "eslint": "^8.56.0"
+  }
+}
