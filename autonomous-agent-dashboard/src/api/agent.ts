@@ -1,4 +1,4 @@
-import { TaskRequest, TaskResponse, FunctionMeta } from '../types';
+import { TaskRequest, FunctionMeta, FunctionCreate } from '../types';
 
 const API_URL = import.meta.env.VITE_API_URL as string;
 const API_KEY = import.meta.env.VITE_API_KEY as string;
@@ -39,4 +39,38 @@ export async function fetchFunctions(): Promise<FunctionMeta[]> {
     throw new Error('Failed to fetch functions');
   }
   return res.json();
+}
+
+export async function createFunction(fn: FunctionCreate): Promise<FunctionMeta> {
+  const res = await fetch(`${API_URL}/functions`, {
+    method: 'POST',
+    headers: getHeaders(),
+    body: JSON.stringify(fn),
+  });
+  if (!res.ok) {
+    throw new Error('Failed to create function');
+  }
+  return res.json();
+}
+
+export async function updateFunction(id: string | number, fn: FunctionCreate): Promise<FunctionMeta> {
+  const res = await fetch(`${API_URL}/functions/${id}`, {
+    method: 'PUT',
+    headers: getHeaders(),
+    body: JSON.stringify(fn),
+  });
+  if (!res.ok) {
+    throw new Error('Failed to update function');
+  }
+  return res.json();
+}
+
+export async function deleteFunction(id: string | number): Promise<void> {
+  const res = await fetch(`${API_URL}/functions/${id}`, {
+    method: 'DELETE',
+    headers: getHeaders(),
+  });
+  if (!res.ok) {
+    throw new Error('Failed to delete function');
+  }
 }
